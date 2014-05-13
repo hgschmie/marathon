@@ -16,6 +16,7 @@ import scala.collection.JavaConverters._
 import mesosphere.mesos.util.FrameworkIdUtil
 import mesosphere.util.RateLimiters
 import scala.collection.mutable
+import com.google.common.eventbus.EventBus
 
 /**
   * @author Tobi Knaup
@@ -38,7 +39,7 @@ class MarathonSchedulerTest extends MarathonSpec {
     frameworkIdUtil = mock[FrameworkIdUtil]
     rateLimiters = mock[RateLimiters]
     scheduler = new MarathonScheduler(
-      None,
+      mock[EventBus],
       new ObjectMapper,
       repo,
       hcManager,
