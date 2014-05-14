@@ -17,6 +17,7 @@ import mesosphere.mesos.util.FrameworkIdUtil
 import mesosphere.util.RateLimiters
 import scala.collection.mutable
 import com.google.common.eventbus.EventBus
+import akka.actor.ActorSystem
 
 /**
   * @author Tobi Knaup
@@ -46,7 +47,8 @@ class MarathonSchedulerTest extends MarathonSpec {
       tracker,
       queue,
       frameworkIdUtil,
-      rateLimiters
+      rateLimiters,
+      mock[ActorSystem]
     )
   }
 
