@@ -6,8 +6,7 @@ import scala.collection.JavaConverters._
 import scala.concurrent._
 import scala.concurrent.duration.Duration
 import mesosphere.marathon.StorageException
-import com.google.common.cache.{ CacheLoader, CacheBuilder }
-import java.util.concurrent.Semaphore
+import mesosphere.util.LockManager
 
 /**
   * @author Tobi Knaup
@@ -17,16 +16,7 @@ class MarathonStore[S <: MarathonState[_, S]](state: State,
                                               newState: () => S, prefix: String = "app:") extends PersistenceStore[S] {
 
   val defaultWait = Duration(3, "seconds")
-  private[this] val locks = {
-    CacheBuilder
-      .newBuilder()
-      .weakValues()
-      .build[String, Semaphore](
-        new CacheLoader[String, Semaphore] {
-          override def load(key: String): Semaphore = new Semaphore(1)
-        }
-      )
-  }
+  private [this] val locks = LockManager()
 
   import mesosphere.util.ThreadPoolContext.context
   import mesosphere.util.BackToTheFuture.futureToFutureOption

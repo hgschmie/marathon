@@ -22,8 +22,10 @@ import mesosphere.mesos.util.FrameworkIdUtil
 import mesosphere.marathon.Protos.MarathonTask
 import mesosphere.marathon.health.HealthCheckManager
 import scala.concurrent.duration._
+import com.google.common.cache.LoadingCache
 import java.util.concurrent.CountDownLatch
 import mesosphere.util.ThreadPoolContext
+import java.util.concurrent.Semaphore
 
 /**
   * Wrapper class for the scheduler
@@ -72,6 +74,8 @@ class MarathonSchedulerService @Inject() (
   def defaultWait = {
     appRepository.defaultWait
   }
+
+  def appLocks: LoadingCache[String, Semaphore] = scheduler.appLocks
 
   def startApp(app: AppDefinition): Future[_] = {
     // Backwards compatibility
