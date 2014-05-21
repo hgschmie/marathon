@@ -270,6 +270,8 @@
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <junitxml>.</junitxml>
                     <filereports>WDF TestSuite.txt</filereports>
+                    <argLine>-Dintegration=${integration}</argLine>
+                    <config>${testConfig}</config>
                 </configuration>
                 <executions>
                     <execution>
