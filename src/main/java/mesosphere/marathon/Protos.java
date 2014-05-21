@@ -11386,18 +11386,19 @@ public final class Protos {
       "\n\013MarathonApp\022\014\n\004name\030\001 \001(\t\0220\n\005tasks\030\002 \003" +
       "(\0132!.mesosphere.marathon.MarathonTask\"1\n",
       "\rContainerInfo\022\017\n\005image\030\001 \002(\014:\000\022\017\n\007optio" +
-      "llback_urls\030\001 \003(\t\":\n\031ScalingStrategyDefi" +
-      "nition\022\035\n\025minimumHealthCapacity\030\001 \002(\001\"\255\001" +
-      "\n\017GroupDefinition\022\n\n\002id\030\001 \002(\t\022\017\n\007version" +
-      "\030\002 \002(\t\022G\n\017scalingStrategy\030\003 \002(\0132..mesosp" +
-      "here.marathon.ScalingStrategyDefinition\022" +
-      "4\n\004apps\030\004 \003(\0132&.mesosphere.marathon.Serv" +
-      "iceDefinition\"\246\001\n\030DeploymentPlanDefiniti" +
-      "on\022\n\n\002id\030\001 \002(\t\022\017\n\007version\030\002 \002(\t\0227\n\torigi" +
-      "nial\030\004 \002(\0132$.mesosphere.marathon.GroupDe",
-      "finition\0224\n\006target\030\005 \002(\0132$.mesosphere.ma" +
-      "rathon.GroupDefinitionB\035\n\023mesosphere.mar" +
-      "athonB\006Protos"
+      "ons\030\002 \003(\014\")\n\020EventSubscribers\022\025\n\rcallbac" +
+      "k_urls\030\001 \003(\t\":\n\031ScalingStrategyDefinitio" +
+      "n\022\035\n\025minimumHealthCapacity\030\001 \002(\001\"\255\001\n\017Gro" +
+      "upDefinition\022\n\n\002id\030\001 \002(\t\022\017\n\007version\030\002 \002(" +
+      "\t\022G\n\017scalingStrategy\030\003 \002(\0132..mesosphere." +
+      "marathon.ScalingStrategyDefinition\0224\n\004ap" +
+      "ps\030\004 \003(\0132&.mesosphere.marathon.ServiceDe" +
+      "finition\"\246\001\n\030DeploymentPlanDefinition\022\n\n" +
+      "\002id\030\001 \002(\t\022\017\n\007version\030\002 \002(\t\0227\n\toriginial\030",
+      "\004 \002(\0132$.mesosphere.marathon.GroupDefinit" +
+      "ion\0224\n\006target\030\005 \002(\0132$.mesosphere.maratho" +
+      "n.GroupDefinitionB\035\n\023mesosphere.marathon" +
+      "B\006Protos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
