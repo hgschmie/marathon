@@ -270,7 +270,9 @@
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <junitxml>.</junitxml>
                     <filereports>WDF TestSuite.txt</filereports>
+                    <!--suppress MavenModelInspection -->
                     <argLine>-Dintegration=${integration}</argLine>
+                    <!--suppress MavenModelInspection -->
                     <config>${testConfig}</config>
                 </configuration>
                 <executions>
