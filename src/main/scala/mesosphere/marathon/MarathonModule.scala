@@ -94,7 +94,8 @@ class MarathonModule(conf: MarathonConf with ZookeeperConf, zk: ZooKeeperClient)
         taskQueue,
         frameworkIdUtil,
         rateLimiters,
-        eventBus))
+        eventBus),
+    "MarathonScheduler")
   }
 
   @Named(ModuleNames.NAMED_CANDIDATE)

@@ -20,8 +20,7 @@ import org.apache.log4j.Logger
   */
 object Main extends App {
 
-  val properties = new Properties
-  properties.load(getClass.getClassLoader.getResourceAsStream("marathon.properties"))
+  val properties = MarathonProperties.properties
 
   val log = Logger.getLogger(getClass.getName)
   log.info(s"Starting Marathon ${properties.getProperty("marathon.version")}")
