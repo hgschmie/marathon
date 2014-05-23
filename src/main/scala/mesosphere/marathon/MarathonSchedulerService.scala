@@ -120,7 +120,7 @@ class MarathonSchedulerService @Inject() (
   }
 
   def listApps(): Iterable[AppDefinition] =
-    Await.result(appRepository.apps, defaultWait)
+    Await.result(appRepository.apps(), defaultWait)
 
   def listAppVersions(appName: String): Iterable[Timestamp] =
     Await.result(appRepository.listVersions(appName), defaultWait)
