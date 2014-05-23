@@ -86,9 +86,7 @@ class MarathonSchedulerService @Inject() (
     appRepository.defaultWait
   }
 
-  implicit def timeout: Timeout = defaultWait
-
-  def appLocks: LoadingCache[String, Semaphore] = scheduler.appLocks
+  implicit val timeout: Timeout = defaultWait
 
   def startApp(app: AppDefinition): Future[_] = {
     // Backwards compatibility
