@@ -11386,19 +11386,19 @@ public final class Protos {
       "\n\013MarathonApp\022\014\n\004name\030\001 \001(\t\0220\n\005tasks\030\002 \003" +
       "(\0132!.mesosphere.marathon.MarathonTask\"1\n",
       "\rContainerInfo\022\017\n\005image\030\001 \002(\014:\000\022\017\n\007optio" +
-      "ons\030\002 \003(\014\")\n\020EventSubscribers\022\025\n\rcallbac" +
-      "k_urls\030\001 \003(\t\":\n\031ScalingStrategyDefinitio" +
-      "n\022\035\n\025minimumHealthCapacity\030\001 \002(\001\"\255\001\n\017Gro" +
-      "upDefinition\022\n\n\002id\030\001 \002(\t\022\017\n\007version\030\002 \002(" +
-      "\t\022G\n\017scalingStrategy\030\003 \002(\0132..mesosphere." +
-      "marathon.ScalingStrategyDefinition\0224\n\004ap" +
-      "ps\030\004 \003(\0132&.mesosphere.marathon.ServiceDe" +
-      "finition\"\246\001\n\030DeploymentPlanDefinition\022\n\n" +
-      "\002id\030\001 \002(\t\022\017\n\007version\030\002 \002(\t\0227\n\toriginial\030",
-      "\004 \002(\0132$.mesosphere.marathon.GroupDefinit" +
-      "ion\0224\n\006target\030\005 \002(\0132$.mesosphere.maratho" +
-      "n.GroupDefinitionB\035\n\023mesosphere.marathon" +
-      "B\006Protos"
+      "ns\030\002 \003(\014\")\n\020EventSubscribers\022\025\n\rcallback" +
+      "_urls\030\001 \003(\t\":\n\031ScalingStrategyDefinition" +
+      "\022\035\n\025minimumHealthCapacity\030\001 \002(\001\"\255\001\n\017Grou" +
+      "pDefinition\022\n\n\002id\030\001 \002(\t\022\017\n\007version\030\002 \002(\t" +
+      "\022G\n\017scalingStrategy\030\003 \002(\0132..mesosphere.m" +
+      "arathon.ScalingStrategyDefinition\0224\n\004app" +
+      "s\030\004 \003(\0132&.mesosphere.marathon.ServiceDef" +
+      "inition\"\246\001\n\030DeploymentPlanDefinition\022\n\n\002" +
+      "id\030\001 \002(\t\022\017\n\007version\030\002 \002(\t\0227\n\toriginial\030\004",
+      " \002(\0132$.mesosphere.marathon.GroupDefiniti" +
+      "on\0224\n\006target\030\005 \002(\0132$.mesosphere.marathon" +
+      ".GroupDefinitionB\035\n\023mesosphere.marathonB" +
+      "\006Protos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
