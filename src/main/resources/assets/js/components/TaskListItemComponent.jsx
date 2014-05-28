@@ -74,8 +74,8 @@ define([
       var updatedAtNode;
       if (task.get("updatedAt") != null) {
         updatedAtNode =
-          <time timestamp={task.get("updatedAt")}>
-            {task.get("updatedAt").toISOString()}
+          <time dateTime={task.get("updatedAt").toISOString()} title={task.get("updatedAt").toISOString()}>
+            {task.get("updatedAt").toLocaleString()}
           </time>;
       }
 
@@ -94,6 +94,11 @@ define([
             <span className={statusClassSet}>
               {task.get("status")}
             </span>
+          </td>
+          <td className="text-right">
+            <time dateTime={task.get("version").toISOString()} title={task.get("version").toISOString()}>
+              {task.get("version").toLocaleString()}
+            </time>
           </td>
           <td className="text-right">{updatedAtNode}</td>
         </tr>

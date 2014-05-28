@@ -2,15 +2,22 @@
 
 define([
   "React",
+  "jsx!components/AppVersionComponent",
+  "jsx!components/AppVersionListComponent",
   "jsx!components/ModalComponent",
   "jsx!components/TabPaneComponent",
   "jsx!components/TaskListComponent",
   "jsx!components/TogglableTabsComponent",
+  "models/AppVersionCollection",
   "mixins/BackboneMixin"
-], function(React, ModalComponent, TabPaneComponent,
-    TaskListComponent, TogglableTabsComponent, BackboneMixin) {
+], function(React, AppVersionComponent, AppVersionListComponent, ModalComponent,
+    TabPaneComponent, TaskListComponent, TogglableTabsComponent,
+    AppVersionCollection, BackboneMixin) {
 
   return React.createClass({
+    displayName: "AppModalComponent",
+    mixins: [BackboneMixin],
+
     destroy: function() {
       this.refs.modalComponent.destroy();
     },
@@ -20,11 +27,26 @@ define([
         this.refs.modalComponent.destroy();
       }
     },
+    fetchAppVersions: function() {
+      var _this = this;
+      var appVersions = this.state.appVersions;
+
+      if (appVersions == null) {
+        appVersions = new AppVersionCollection({appId: this.props.model.id});
+      }
+
+      appVersions.fetch({
+        success: function() {
+          _this.setState({appVersions: appVersions});
+        }
+      });
+    },
     getResource: function() {
       return this.props.model;
     },
     getInitialState: function() {
       return {
+        appVersions: null,
         selectedTasks: {}
       };
     },
@@ -60,10 +82,21 @@ define([
     killSelectedTasksAndScale: function() {
       this.killSelectedTasks({scale: true});
     },
-    mixins: [BackboneMixin],
     refreshTaskList: function() {
       this.refs.taskList.fetchTasks();
     },
+
+    rollbackToAppVersion: function(appVersion) {
+      var _this = this;
+
+      appVersion.fetch({
+        success: function() {
+          _this.props.model.setAppVersion(appVersion);
+          _this.props.model.save();
+        }
+      });
+    },
+
     render: function() {
       var buttons;
       var model = this.props.model;
@@ -95,48 +128,6 @@ define([
           </p>;
       }
 
-      var cmdNode = (model.get("cmd") == null) ?
-        <dd className="text-muted">Unspecified</dd> :
-        <dd>{model.get("cmd")}</dd>;
-      var constraintsNode = (model.get("constraints").length < 1) ?
-        <dd className="text-muted">Unspecified</dd> :
-        model.get("constraints").map(function(c) {
-
-          // Only include constraint parts if they are not empty Strings. For
-          // example, a hostname uniqueness constraint looks like:
-          //
-          //     ["hostname", "UNIQUE", ""]
-          //
-          // it should print "hostname:UNIQUE" instead of "hostname:UNIQUE:", no
-          // trailing colon.
-          return (
-            <dd key={c}>
-              {c.filter(function(s) { return s !== ""; }).join(":")}
-            </dd>
-          );
-        });
-      var containerNode = (model.get("container") == null) ?
-        <dd className="text-muted">Unspecified</dd> :
-        <dd>{JSON.stringify(model.get("container"))}</dd>;
-      var envNode = (Object.keys(model.get("env")).length === 0) ?
-        <dd className="text-muted">Unspecified</dd> :
-
-        // Print environment variables as key value pairs like "key=value"
-        Object.keys(model.get("env")).map(function(k) {
-          return <dd key={k}>{k + "=" + model.get("env")[k]}</dd>
-        });
-      var executorNode = (model.get("executor") === "") ?
-        <dd className="text-muted">Unspecified</dd> :
-        <dd>{model.get("executor")}</dd>;
-      var portsNode = (model.get("ports").length === 0 ) ?
-        <dd className="text-muted">Unspecified</dd> :
-        <dd>{model.get("ports").join(",")}</dd>;
-      var urisNode = (model.get("uris").length === 0) ?
-        <dd className="text-muted">Unspecified</dd> :
-        model.get("uris").map(function(u) {
-          return <dd key={u}>{u}</dd>;
-        });
-
       return (
         <ModalComponent ref="modalComponent" onDestroy={this.props.onDestroy} size="lg">
           <div className="modal-header">
@@ -160,41 +151,26 @@ define([
           </div>
           <TogglableTabsComponent className="modal-body"
               tabs={[
-                {id: "tasks", text: "Tasks"},
+                {id: "instances", text: "Instances"},
                 {id: "configuration", text: "Configuration"}
               ]}>
-            <TabPaneComponent id="tasks">
+            <TabPaneComponent id="instances">
               {buttons}
               <TaskListComponent collection={model.tasks}
                 ref="taskList" selectedTasks={this.state.selectedTasks}
                 onAllTasksToggle={this.toggleAllTasks}
                 onTaskToggle={this.toggleTask} />
             </TabPaneComponent>
-            <TabPaneComponent id="configuration">
-              <dl className="dl-horizontal">
-                <dt>Command</dt>
-                {cmdNode}
-                <dt>Constraints</dt>
-                {constraintsNode}
-                <dt>Container</dt>
-                {containerNode}
-                <dt>CPUs</dt>
-                <dd>{model.get("cpus")}</dd>
-                <dt>Environment</dt>
-                {envNode}
-                <dt>Executor</dt>
-                {executorNode}
-                <dt>Instances</dt>
-                <dd>{model.get("instances")}</dd>
-                <dt>Memory (MB)</dt>
-                <dd>{model.get("mem")}</dd>
-                <dt>Ports</dt>
-                {portsNode}
-                <dt>URIs</dt>
-                {urisNode}
-                <dt>Version</dt>
-                <dd>{model.get("version").toLocaleString()}</dd>
-              </dl>
+            <TabPaneComponent
+                id="configuration"
+                onActivate={this.fetchAppVersions}>
+              <h4>Current Version</h4>
+              <AppVersionComponent app={this.props.model} />
+              <h4>Previous Versions</h4>
+              <AppVersionListComponent
+                app={this.props.model}
+                appVersions={this.state.appVersions == null ? null : this.state.appVersions.slice(1)}
+                onRollback={this.rollbackToAppVersion} />
             </TabPaneComponent>
           </TogglableTabsComponent>
           <div className="modal-footer">
