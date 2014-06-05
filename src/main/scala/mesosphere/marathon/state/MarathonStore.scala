@@ -16,7 +16,7 @@ class MarathonStore[S <: MarathonState[_, S]](state: State,
                                               newState: () => S, prefix: String = "app:") extends PersistenceStore[S] {
 
   val defaultWait = Duration(3, "seconds")
-  private [this] val locks = LockManager()
+  private[this] val locks = LockManager()
 
   import mesosphere.util.ThreadPoolContext.context
   import mesosphere.util.BackToTheFuture.futureToFutureOption

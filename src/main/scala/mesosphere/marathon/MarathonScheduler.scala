@@ -5,7 +5,7 @@ import org.apache.mesos.{ SchedulerDriver, Scheduler }
 import scala.collection.JavaConverters._
 import mesosphere.mesos.TaskBuilder
 import mesosphere.marathon.api.v1.AppDefinition
-import scala.concurrent.{Future, ExecutionContext}
+import scala.concurrent.{ Future, ExecutionContext }
 import javax.inject.{ Named, Inject }
 import akka.event.EventStream
 import mesosphere.marathon.event._
@@ -14,13 +14,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import mesosphere.marathon.Protos.MarathonTask
 import mesosphere.mesos.util.FrameworkIdUtil
 import mesosphere.mesos.protos
-import mesosphere.util.{ThreadPoolContext, RateLimiters}
+import mesosphere.util.{ ThreadPoolContext, RateLimiters }
 import scala.util.{ Success, Failure }
 import org.apache.log4j.Logger
 import akka.actor.ActorRef
 import mesosphere.marathon.event.MesosStatusUpdateEvent
 import mesosphere.marathon.event.MesosFrameworkMessageEvent
-import mesosphere.marathon.MarathonSchedulerActor.{LaunchTasks, ScaleApp}
+import mesosphere.marathon.MarathonSchedulerActor.{ LaunchTasks, ScaleApp }
 trait SchedulerCallbacks {
   def disconnected(): Unit
 }
@@ -40,15 +40,15 @@ object MarathonScheduler {
   * @author Tobi Knaup
   */
 class MarathonScheduler @Inject() (
-  @Named(EventModule.busName) eventBus: EventStream,
+    @Named(EventModule.busName) eventBus: EventStream,
     @Named("restMapper") mapper: ObjectMapper,
-  @Named("schedulerActor") schedulerActor: ActorRef,
+    @Named("schedulerActor") schedulerActor: ActorRef,
     taskTracker: TaskTracker,
     taskQueue: TaskQueue,
     frameworkIdUtil: FrameworkIdUtil,
-  rateLimiters: RateLimiters
+    rateLimiters: RateLimiters) extends Scheduler {
 
-  private [this] val log = Logger.getLogger(getClass.getName)
+  private[this] val log = Logger.getLogger(getClass.getName)
 
   import ThreadPoolContext.context
   import mesosphere.mesos.protos.Implicits._
@@ -123,8 +123,9 @@ class MarathonScheduler @Inject() (
       }
     }
 
-    toLaunch.result().foreach { case (id, task) =>
-      schedulerActor ! LaunchTasks(id, task)
+    toLaunch.result().foreach {
+      case (id, task) =>
+        schedulerActor ! LaunchTasks(id, task)
     }
   }
 
@@ -146,13 +147,13 @@ class MarathonScheduler @Inject() (
         taskTracker.terminated(appID, status) foreach { taskOption =>
           taskOption match {
             case Some(task) => postEvent(status, task)
-            case None => log.warn(s"Couldn't post event for ${status.getTaskId}")
+            case None       => log.warn(s"Couldn't post event for ${status.getTaskId}")
           }
 
           if (rateLimiters.tryAcquire(appID)) {
             schedulerActor ! ScaleApp(appID)
-          } else {
-        else {
+          }
+          else {
             log.warn(s"Rate limit reached for $appID")
           }
         }
@@ -206,7 +207,6 @@ class MarathonScheduler @Inject() (
     suicide()
   }
 
-        else {
   private def suicide(): Unit = {
     log.fatal("Committing suicide")
 
